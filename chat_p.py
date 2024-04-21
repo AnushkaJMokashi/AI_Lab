@@ -44,7 +44,7 @@ def chat():
             break
         response = respond(user_input)
         print("Bot: ",response)
-        break
+        
 
 if __name__ == "__main__":
     chat()
