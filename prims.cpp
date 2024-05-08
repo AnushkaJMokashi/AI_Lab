@@ -7,9 +7,9 @@ class Solution
 {
 	public:
 	//Function to find sum of weights of edges of the Minimum Spanning Tree.
-    int spanningTree(int V, vector<vector<int>> adj[])
+    int spanningTree(int V, vector<vector<int>> adj[])  //no. of vertices , adjacency list
     {
-        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>> > pq;
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>> > pq; //descending order //acc to wt firsr later node
         vector<int> vis(V,0);
         
         pq.push({0,0}); //wt,node
@@ -25,8 +25,9 @@ class Solution
             
             vis[node] = 1;
             
-            sum += wt;
             
+            sum += wt;
+            cout<<node;
             for(auto it : adj[node]){
                 int adjNode = it[0];
                 int edgWt = it[1];
@@ -36,18 +37,22 @@ class Solution
                 }
             }
         }
+        
         return sum;
     }
 };
 
 int main() {
-    int V; // Number of vertices
+    int V = 0; // Number of vertices
     cout << "Enter the number of vertices: ";
     cin >> V;
+
     vector<vector<int>> adj[V];
+
     int E; // Number of edges
     cout << "Enter the number of edges: ";
     cin >> E;
+
     cout << "Enter the edges in the format (source, destination, weight):" << endl;
     for (int i = 0; i < E; ++i) {
         int u, v, wt;
@@ -55,8 +60,10 @@ int main() {
         adj[u].push_back({v, wt});
         adj[v].push_back({u, wt}); // Assuming undirected graph
     }
+
     Solution obj;
     int minSpanningTreeWeight = obj.spanningTree(V, adj);
     cout << "Sum of weights of edges of the Minimum Spanning Tree: " << minSpanningTreeWeight << endl;
+
     return 0;
 }

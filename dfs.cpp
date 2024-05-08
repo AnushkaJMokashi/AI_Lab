@@ -1,74 +1,83 @@
-#include <iostream>
-#include <vector>
-#include <queue>
+#include<iostream>
+#include<vector>
+#include<queue>
 using namespace std;
 
-// DFS
-void dfs(vector<vector<int>> &adj, int node, vector<int> &vis) {
-    if (adj[node].size() == 0) {
-        return;
-    }
+void bfs(vector<vector<int>> adj, int start, int n){
+    vector<int> vis(n,0);
 
-    for (auto it : adj[node]) {
-        if (vis[it] == 0) {
-            vis[it] = 1;
-            cout << it << " ";
-            dfs(adj, it, vis);
-        }
-    }
-}
-
-// BFS
-void bfs(vector<vector<int>> &adj, vector<int> &vis) {
     queue<int> q;
+    q.push(start);
 
-    q.push(0);
+    vis[start] = 1;
 
-    while (!q.empty()) {
+    while(!q.empty()){
         int front = q.front();
         q.pop();
-        cout << front << " ";
 
-        for (auto it : adj[front]) {
-            if (vis[it] == 0) {
-                vis[it] = 1;
-                q.push(it);
+        cout<< front << " -> ";
+
+        int n = adj[front].size();
+        
+        for(int i = 0;i < n;i++){
+            int temp = adj[front][i];
+
+            if(vis[temp] == 0){
+                q.push(temp);
+                vis[temp] = 1;
             }
+
         }
     }
 }
 
-int main() {
-    int n;
-    cout << "Enter the number of nodes: ";
-    cin >> n;
 
-    vector<vector<int>> adj(n);
+void dfs(vector<vector<int>> adj, int node, vector<int> & vis){
+    if(vis[node] == 1) return;
 
-    cout << "Enter adjacency list:" << endl;
-    for (int i = 0; i < n; ++i) {
-        cout << "Enter number of neighbors for node " << i << ": ";
-        int num_neighbors;
-        cin >> num_neighbors;
-        cout << "Enter neighbors for node " << i << ": ";
-        for (int j = 0; j < num_neighbors; ++j) {
-            int neighbor;
-            cin >> neighbor;
-            adj[i].push_back(neighbor);
+    vis[node] = 1;
+
+    int n = adj[node].size();
+
+    cout<<node<< " -> ";
+
+    for(int i = 0;i < n;i++){
+        int temp = adj[node][i];
+        if(vis[temp] == 0){
+            dfs(adj,temp,vis);
         }
     }
 
-    vector<int> vis(n, 0);
+    return;
+}
 
-    cout << "BFS: ";
-    bfs(adj, vis);
-    cout << endl;
+void addEdge(vector<vector<int> >& adjList, int u, int v)
+{
+    adjList[u].push_back(v);
+}
+ 
 
-    vector<int> vis2(n, 0);
-    cout << "DFS: ";
-    cout << "0"
-         << " ";
-    dfs(adj, 0, vis2);
+int main(){
+    int vertices = 3;
+ 
+    // Adjacency list representation of the graph
+    vector<vector<int> > adjList(vertices);
+ 
+    // Add edges to the graph
+    addEdge(adjList, 0, 1);
+    addEdge(adjList, 0, 2);
+    addEdge(adjList, 1, 0);
+    addEdge(adjList, 1, 2);
+    addEdge(adjList, 2, 0);
+    addEdge(adjList, 2, 1);
+
+    bfs(adjList,0,vertices);
+
+    cout<<endl;
+    
+    vector<int> vis(vertices,0);
+
+    dfs(adjList,0,vis);
 
     return 0;
 }
